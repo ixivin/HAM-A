@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>A类业余无线电台操作证书题库</title>
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <style>
+      h1 {
+        text-align: center;
+        margin: 30px;
+        font-size: 1.3rem;
+      }
+      .id {
+        font-size: 12px;
+        color: rgb(224, 220, 220);
+      }
+
+      .num {
+        width: 36px;
+      }
+
+      dl {
+        border-radius: 0.375rem;
+        border-width: 1px;
+        box-shadow: 0 4px 12px #0003;
+        gap: 0.375rem;
+        height: fit-content;
+        min-width: 80px;
+        pointer-events: auto;
+        --tw-border-opacity: 1;
+        border-color: #d1d5db;
+        border-color: rgb(209 213 219 / var(--tw-border-opacity));
+        --tw-bg-opacity: 1;
+        background-color: #fff;
+        background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+        font-size: 0.75rem;
+        font-weight: 700;
+        line-height: 1rem;
+        padding: 0.875rem 0.5rem;
+        --tw-text-opacity: 1;
+        color: #6b7280;
+        color: rgb(107 114 128 / var(--tw-text-opacity));
+      }
+
+      dt {
+        font-size: 14px;
+        padding-bottom: 6px;
+      }
+
+      dd {
+        margin-inline-start: 0px;
+        color: oklch(0.7676 0.184 183.61);
+        font-size: 14px;
+      }
+
+      .list {
+        max-width: 60rem;
+        width: 90%;
+        margin: 0 auto;
+      }
+      body {
+        /* font-family: 'font'; */
+        background-color: #f8f8f8;
+        background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='84' height='48'%3E%3Cpath fill='%23e5e5e5' fill-opacity='.41' fill-rule='evenodd' d='M0 0h12v6H0zm28 8h12v6H28zm14-8h12v6H42zm14 0h12v6H56zm0 8h12v6H56zM42 8h12v6H42zm0 16h12v6H42zm14-8h12v6H56zm14 0h12v6H70zm0-16h12v6H70zM28 32h12v6H28zM14 16h12v6H14zM0 24h12v6H0zm0 8h12v6H0zm14 0h12v6H14zm14 8h12v6H28zm-14 0h12v6H14zm28 0h12v6H42zm14-8h12v6H56zm0-8h12v6H56zm14 8h12v6H70zm0 8h12v6H70zM14 24h12v6H14zm14-8h12v6H28zM14 8h12v6H14zM0 8h12v6H0z'/%3E%3C/svg%3E");
+      }
+      .counter {
+        position: fixed;
+        right: 16px;
+        bottom: 16px;
+        font-size: 14px;
+      }
+      dl.selected {
+        background-color: transparent;
+      }
+      /* @font-face {
+        font-family: "font";
+        font-style: normal;
+        font-weight: 400;
+        src: local(""), url('font.ttf') format("truetype");
+      } */
+    </style>
+  </head>
+  <body>
+    <h1>A类业余无线电台操作证书考试题库(共365道)</h1>
+    <div class="list">
+      {{range .}}
+      <dl id="{{.Num}}">
+        <dt>Q: {{.Question}}<span class="id">[{{.ID}}]</span></dt>
+        {{range $key, $value := .Options}}
+        <dd>{{$key}}: {{$value}}</dd>
+        {{end}}
+      </dl>
+      {{end}}
+    </div>
+    <div class="counter">0/365</div>
+  </body>
+  <script>
+    var total = 365;
+    document.addEventListener("DOMContentLoaded", function () {
+      // 初始化DL元素的选中状态
+      var selected = JSON.parse(localStorage.getItem("selected_dl") || "[]");
+      var dls = document.querySelectorAll("dl");
+      dls.forEach(function (dl) {
+        var id = dl.getAttribute("id");
+        if (selected.indexOf(id) >= 0) {
+          dl.classList.add("selected");
+        }
+
+        // 绑定点击事件
+        dl.addEventListener("click", function () {
+          var index = selected.indexOf(id);
+          if (index >= 0) {
+            selected.splice(index, 1);
+            this.classList.remove("selected");
+          } else {
+            selected.push(id);
+            this.classList.add("selected");
+          }
+          localStorage.setItem("selected_dl", JSON.stringify(selected));
+          document.querySelector(".counter").textContent =
+            selected.length + "/" + total;
+        });
+      });
+
+      // 更新计数器
+      document.querySelector(".counter").textContent =
+        selected.length + "/" + total;
+    });
+  </script>
+</html>
